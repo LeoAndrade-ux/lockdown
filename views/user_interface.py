@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
+import sys
 
 class UserInterface:
     def __init__(self, ransomware_controller):
@@ -7,6 +8,7 @@ class UserInterface:
         self.root = tk.Tk()  # Crea la ventana principal
         self.root.title("Ransomware Alert")  # Título de la ventana
         self.root.geometry("400x200")  # Dimensiones de la ventana
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # Crear un label para el mensaje de rescate
         self.message_label = tk.Label(self.root, text="", wraplength=350)
@@ -38,4 +40,9 @@ class UserInterface:
         messagebox.showinfo("Éxito", "¡Tus archivos han sido descifrados correctamente!")
         self.root.quit()
         self.root.destroy()
-        exit()
+        sys.exit(1)
+        
+    def on_close(self):
+        self.root.destroy()  # Cierra la ventana y todos los recursos de Tkinter
+        sys.exit(1)  # Finaliza el programa completamente
+
